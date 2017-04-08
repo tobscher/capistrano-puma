@@ -12,18 +12,20 @@ module Capistrano
     end
 
     def debian_install(role)
-      on roles(fetch(:puma_role)) do |role|
         template_puma 'puma-deb', "#{fetch(:tmp_dir)}/puma", role
-        execute "chmod +x #{fetch(:tmp_dir)}/puma"
+        on roles(fetch(:puma_role)) do |role|
+          execute "chmod +x #{fetch(:tmp_dir)}/puma"
+        end
         sudo "mv #{fetch(:tmp_dir)}/puma /etc/init.d/puma"
         sudo 'update-rc.d -f puma defaults'
       end
     end
 
     def rhel_install(role)
-      on roles(fetch(:puma_role)) do |role|
         template_puma 'puma-rpm', "#{fetch(:tmp_dir)}/puma", role
-        execute "chmod +x #{fetch(:tmp_dir)}/puma"
+        on roles(fetch(:puma_role)) do |role|
+          execute "chmod +x #{fetch(:tmp_dir)}/puma"
+        end
         sudo "mv #{fetch(:tmp_dir)}/puma /etc/init.d/puma"
         sudo 'chkconfig --add puma'
       end
