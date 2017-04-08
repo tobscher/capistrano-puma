@@ -2,6 +2,21 @@
 app=$1;
 cd $app || exit 1
 
+
+# on system boot, and root have no rbenv installed,
+#   after start-stop-daemon switched to current user, we have to init rbenv
+if [ -d "$HOME/.rbenv/bin" ]; then
+  PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+  eval "$(rbenv init -)"
+elif [ -d "/usr/local/rbenv/bin" ]; then
+  PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH"
+  eval "$(rbenv init -)"
+elif [ -f /usr/local/rvm/scripts/rvm ]; then
+  source /etc/profile.d/rvm.sh
+elif [ -f "$HOME/.rvm/scripts/rvm" ]; then
+  source "$HOME/.rvm/scripts/rvm"
+fi
+
 if [ -e Gemfile ]; then
     exec <%= fetch(:puma_user) ? "sudo -u #{puma_user(@role)}" : '' %> sh -c "exec bundle exec puma -C <%= fetch(:puma_conf) %> --daemon"
 else
