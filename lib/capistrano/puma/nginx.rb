@@ -3,7 +3,7 @@ module Capistrano
     include PumaCommon
     def set_defaults
       # Nginx and puma configuration
-      set_if_empty :nginx_config_name, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
+      set_if_empty :nginx_config_name, -> { "#{fetch(:application)}_#{fetch(:stage)}.conf" }
       set_if_empty :nginx_sites_available_path, '/etc/nginx/sites-available'
       set_if_empty :nginx_sites_enabled_path, '/etc/nginx/sites-enabled'
       set_if_empty :nginx_server_name,  -> { "localhost #{fetch(:application)}.local" }
