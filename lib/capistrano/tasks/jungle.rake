@@ -33,7 +33,7 @@ namespace :puma do
     task :add do
       on roles(fetch(:puma_role)) do|role|
         ask(:puma_environment_variables)
-        sudo "/etc/init.d/puma add '#{current_path}' #{fetch(:puma_user, role.user)} '#{current_path}/config/puma.rb' '#{current_path}/log/puma.log' #{fetch(:puma_environment_variables)}"
+        sudo "/etc/init.d/puma add '#{current_path}' #{fetch(:puma_user, role.user)} '#{shared_path}/puma.rb' '#{shared_path}/log/puma.log' '#{fetch(:puma_environment_variables)}"'
       end
     end
 
